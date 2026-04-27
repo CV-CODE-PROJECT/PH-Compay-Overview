@@ -8,7 +8,7 @@ import { createServer as createViteServer } from 'vite';
 const PORT = Number(process.env.PORT || 3000);
 const SPREADSHEET_ID = process.env.SPREADSHEET_ID;
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
-
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const SHEET_NAME_MAP: Record<string, string> = {
   employee: 'Employee',
   'employee-position': '⟳Employee position',
@@ -22,15 +22,12 @@ const SHEET_NAME_MAP: Record<string, string> = {
   'project-info': 'Project info',
 };
 
-function requirePublicConfig() {
-  if (!SPREADSHEET_ID || !GOOGLE_CLIENT_ID) {
-    throw new Error('Missing required environment variables: GOOGLE_CLIENT_ID and SPREADSHEET_ID.');
+function requireSpreadsheetId() {
+  if (!SPREADSHEET_ID) {
+    throw new Error('Missing required environment variable: SPREADSHEET_ID.');
   }
 
-  return {
-    googleClientId: GOOGLE_CLIENT_ID,
-    spreadsheetId: SPREADSHEET_ID,
-  };
+  return SPREADSHEET_ID;
 }
 
 async function startServer() {
@@ -38,15 +35,6 @@ async function startServer() {
 
   app.get('/api/health', (_req, res) => {
     res.json({ ok: true });
-  });
-
-  app.get('/api/config', (_req, res) => {
-    try {
-      res.json(requirePublicConfig());
-    } catch (error) {
-      const message = error instanceof Error ? error.message : 'Runtime configuration is invalid.';
-      res.status(500).json({ error: message });
-    }
   });
 
   app.get('/api/sheet/:name', async (req, res) => {
@@ -62,7 +50,7 @@ async function startServer() {
     }
 
     try {
-      const { spreadsheetId } = requirePublicConfig();
+      const spreadsheetId = requireSpreadsheetId();
       const response = await axios.get(
         `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${encodeURIComponent(sheetName)}`,
         {
