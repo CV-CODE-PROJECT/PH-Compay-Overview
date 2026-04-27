@@ -2,7 +2,7 @@ import { lazy, Suspense, useCallback, useEffect, useState } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import axios from 'axios';
 
-import { getAppConfig } from './apis/config';
+import { getAppConfig } from './config/app';
 import CheckingScreen from './components/common/CheckingScreen';
 import ConfigErrorScreen from './components/common/ConfigErrorScreen';
 import PermissionDeniedScreen from './components/common/PermissionDeniedScreen';
@@ -21,6 +21,13 @@ const DataPage = lazy(() => import('./pages/DataPage'));
 const OrgChartPage = lazy(() => import('./pages/OrgChartPage'));
 
 export default function App() {
+  const [config] = useState(() => {
+    try {
+      return getAppConfig();
+    } catch (error) {
+      return error instanceof Error ? error : new Error('Runtime configuration is invalid.');
+    }
+  });
   const [dataSource, setDataSource] = useState<'live' | 'fallback'>('live');
   const [error, setError] = useState<string | null>(null);
   const [token, setToken] = useState<string | null>(
@@ -30,9 +37,9 @@ export default function App() {
   const [userData, setUserData] = useState<{ email: string; name: string; picture?: string } | null>(null);
   const [permissionDenied, setPermissionDenied] = useState(false);
   const [tokenClient, setTokenClient] = useState<any>(null);
-  const [googleClientId, setGoogleClientId] = useState<string | null>(null);
-  const [spreadsheetId, setSpreadsheetId] = useState<string | null>(null);
-  const [configError, setConfigError] = useState<string | null>(null);
+  const googleClientId = config instanceof Error ? null : config.googleClientId;
+  const spreadsheetId = config instanceof Error ? null : config.spreadsheetId;
+  const configError = config instanceof Error ? config.message : null;
 
   useEffect(() => {
     const legacyToken = localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY);
@@ -40,21 +47,6 @@ export default function App() {
       sessionStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, legacyToken);
       localStorage.removeItem(ACCESS_TOKEN_STORAGE_KEY);
     }
-  }, []);
-
-  useEffect(() => {
-    const fetchConfig = async () => {
-      try {
-        const config = await getAppConfig();
-        setGoogleClientId(config.googleClientId);
-        setSpreadsheetId(config.spreadsheetId);
-      } catch (err) {
-        console.error('Config fetch error:', err);
-        setConfigError('Failed to load runtime configuration from the server.');
-      }
-    };
-
-    fetchConfig();
   }, []);
 
   const handleLogout = useCallback(() => {

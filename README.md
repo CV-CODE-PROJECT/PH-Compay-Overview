@@ -29,7 +29,6 @@ Create `.env` from `.env.example` and set:
 The Express server exposes:
 
 - `GET /api/health`
-- `GET /api/config`
 - `GET /api/sheet/:name`
 
 ## Quality checks
