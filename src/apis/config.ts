@@ -1,6 +1,7 @@
-import { configClient } from './client.ts';
+import { configClient } from './client';
+import type { AppConfig } from '../config/app';
 
-export const getAppConfig = async () => {
-  const response = await configClient.get('/config');
+export const getAppConfig = async (): Promise<AppConfig> => {
+  const response = await configClient.get<AppConfig>('/config');
   return response.data;
 };

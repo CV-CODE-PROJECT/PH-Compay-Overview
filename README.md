@@ -1,20 +1,38 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# PH Company Overview
 
-# Run and deploy your AI Studio app
+Internal dashboard for browsing employee, role, team, and project overview data from Google Sheets.
 
-This contains everything you need to run your app locally.
+## Runtime requirements
 
-View your app in AI Studio: https://ai.studio/apps/b575f71f-51a8-4328-88f1-0c549180446b
+- Node.js 20+
+- A Google OAuth client configured for Google Identity Services
+- Google Sheets API enabled for the same Google Cloud project
 
-## Run Locally
+## Environment variables
 
-**Prerequisites:**  Node.js
+Create `.env` from `.env.example` and set:
 
+- `GOOGLE_CLIENT_ID`
+- `SPREADSHEET_ID`
+- `PORT` (optional, defaults to `3000`)
+
+`GOOGLE_CLIENT_SECRET` is not used by this app and should not be added unless the authentication flow changes.
+
+## Development
 
 1. Install dependencies:
    `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
+2. Create `.env`
 3. Run the app:
    `npm run dev`
+
+The Express server exposes:
+
+- `GET /api/health`
+- `GET /api/config`
+- `GET /api/sheet/:name`
+
+## Quality checks
+
+- Type check: `npm run lint`
+- Build client: `npm run build`
