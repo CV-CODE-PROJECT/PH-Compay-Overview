@@ -4,7 +4,7 @@ export interface AppConfig {
   spreadsheetId: string;
 }
 
-function readRequiredEnv(name: 'GOOGLE_CLIENT_ID' | 'GOOGLE_CLIENT_SECRET' | 'SPREADSHEET_ID'): string {
+function readRequiredEnv(name: 'VITE_GOOGLE_CLIENT_ID' | 'VITE_GOOGLE_CLIENT_SECRET' | 'VITE_SPREADSHEET_ID'): string {
   const value = import.meta.env[name];
 
   if (!value || !String(value).trim()) {
@@ -16,8 +16,8 @@ function readRequiredEnv(name: 'GOOGLE_CLIENT_ID' | 'GOOGLE_CLIENT_SECRET' | 'SP
 
 export function getAppConfig(): AppConfig {
   return {
-    googleClientId: readRequiredEnv('GOOGLE_CLIENT_ID'),
-    googleClientSecret: readRequiredEnv('GOOGLE_CLIENT_SECRET'),
-    spreadsheetId: readRequiredEnv('SPREADSHEET_ID'),
+    googleClientId: readRequiredEnv('VITE_GOOGLE_CLIENT_ID'),
+    googleClientSecret: readRequiredEnv('VITE_GOOGLE_CLIENT_SECRET'),
+    spreadsheetId: readRequiredEnv('VITE_SPREADSHEET_ID'),
   };
 }

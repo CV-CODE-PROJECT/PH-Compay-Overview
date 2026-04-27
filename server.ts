@@ -7,8 +7,6 @@ import { createServer as createViteServer } from 'vite';
 
 const PORT = Number(process.env.PORT || 3000);
 const SPREADSHEET_ID = process.env.SPREADSHEET_ID;
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
-const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const SHEET_NAME_MAP: Record<string, string> = {
   employee: 'Employee',
   'employee-position': '⟳Employee position',
