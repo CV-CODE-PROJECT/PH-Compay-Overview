@@ -12,9 +12,9 @@ Internal dashboard for browsing employee, role, team, and project overview data 
 
 Create `.env` from `.env.example` and set:
 
-- `GOOGLE_CLIENT_ID`
-- `SPREADSHEET_ID`
-- `PORT` (optional, defaults to `3000`)
+- `VITE_GOOGLE_CLIENT_ID`
+- `VITE_SPREADSHEET_ID`
+- `VITE_PORT` (optional, defaults to `3000`)
 
 `GOOGLE_CLIENT_SECRET` is not used by this app and should not be added unless the authentication flow changes.
 
