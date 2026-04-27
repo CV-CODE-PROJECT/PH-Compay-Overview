@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+@layer base {
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Playfair+Display:ital,wght@1,900&display=swap');
+
+  body {
+    background-color: #f8fafc;
+    font-family: var(--font-sans);
+    color: rgb(15 23 42);
+  }
+}
+
+:root {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", serif;
+}
+
+/* Force Org Chart SVG container to take full height */
+.svg-chart-container,
+.svg-chart-container > svg {
+  height: 100% !important;
+  width: 100% !important;
+}
